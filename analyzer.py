@@ -9,4 +9,9 @@ with open("auth.log") as f:
                 counts[ip] += 1
             else:
                 counts[ip] = 1
-    print(counts)
+sorted_ips = sorted(counts.items(),key=lambda pair: pair[1], reverse= True)
+
+print("[!] Suspicious login activity detected:")
+
+for ip, count in sorted_ips:
+    print(f"{ip} --> {count} failed attempts")
