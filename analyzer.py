@@ -15,7 +15,5 @@ sorted_ips = sorted(counts.items(),key=lambda pair: pair[1], reverse= True)
 print("[!] Suspicious login activity detected:")
 
 for ip, count in sorted_ips:
-    if count >= THRESHOLD:
-        print(f"{ip} --> {count} failed attempts [BRUTE FORCE SUSPECTED]")
-    else:
-        print(f"{ip} --> {count} failed attempts")
+    flag = "[BRUTE FORCE SUSPECTED]" if count >= THRESHOLD else ""
+    print(f"{ip} --> {count} failed attempts {flag}")
