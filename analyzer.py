@@ -1,10 +1,5 @@
 import sys
 
-if len(sys.argv) < 2:
-        print("Usage: python analyzer.py <logfile>")
-        sys.exit(1)
-
-log_file = sys.argv[1]
 THRESHOLD = 3
 def parse_log(log_file):
     counts = {}
