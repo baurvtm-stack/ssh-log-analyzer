@@ -7,3 +7,6 @@ __pycache__/
 
 # Настройки редактора
 .vscode/
+
+# Кеш pytest
+.pytest_cache/
