@@ -1,4 +1,7 @@
 from analyzer import parse_log
+from datetime import datetime
+from analyzer import parse_timestamp
+
 
 def test_counts_failed_attemtps(tmp_path):
     log = tmp_path / "test.log"
@@ -34,3 +37,8 @@ def test_empty_files(tmp_path):
     
     result = parse_log(log)
     assert result == {}
+    
+def test_parse_timestamp():
+    line = "Sep  8 10:14:22 server sshd[1]: Failed password for root from 1.1.1.1 port 22 ssh2"
+    result = parse_timestamp(line)
+    assert result == datetime(2026, 9, 8, 10, 14, 22)

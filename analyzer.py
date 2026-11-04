@@ -1,6 +1,16 @@
 import sys
+from datetime import datetime
 
+LOG_YEAR = 2026
 THRESHOLD = 3
+
+
+def parse_timestamp(line):
+    words = line.split()
+    time_str = f"{LOG_YEAR} {words[0]} {words[1]} {words[2]}"
+    return datetime.strptime(time_str, "%Y %b %d %H:%M:%S")
+
+
 def parse_log(log_file):
     counts = {}
     try:
@@ -16,13 +26,15 @@ def parse_log(log_file):
                         else:
                             counts[ip] = 1
                     except (ValueError, IndexError):
-                            continue
-    except FileNotFoundError: 
-            print(
-                f"[!] Error: file {log_file} not found. Make sure it exists in the current directory."
-            )
-            sys.exit(1)
+                        continue
+    except FileNotFoundError:
+        print(
+            f"[!] Error: file {log_file} not found. Make sure it exists in the current directory."
+        )
+        sys.exit(1)
     return counts
+
+
 def print_report(counts):
     sorted_ips = sorted(counts.items(), key=lambda pair: pair[1], reverse=True)
     print("[!] Suspicious login activity detected:")
@@ -33,12 +45,13 @@ def print_report(counts):
 
 def main():
     if len(sys.argv) < 2:
-            print("Usage: python analyzer.py <logfile>")
-            sys.exit(1)
+        print("Usage: python analyzer.py <logfile>")
+        sys.exit(1)
 
     log_file = sys.argv[1]
     counts = parse_log(log_file)
     print_report(counts)
+
 
 if __name__ == "__main__":
     main()
