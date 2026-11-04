@@ -35,6 +35,31 @@ def parse_log(log_file):
     return counts
 
 
+def collect_attempts(log_file):
+    attempts = {}
+    try:
+        with open(log_file) as f:
+            for x in f:
+                if "Failed password" in x:
+                    words = x.split()
+                    try:
+                        idx = words.index("from")
+                        ip = words[idx + 1]
+                        t = parse_timestamp(x)
+                        if ip in attempts:
+                            attempts[ip].append(t)
+                        else:
+                            attempts[ip] = [t]  
+                    except (ValueError, IndexError):
+                        continue
+    except FileNotFoundError:
+        print(
+            f"[!] Error: file {log_file} not found. Make sure it exists in the current directory."
+        )
+        sys.exit(1)
+    return attempts
+
+
 def print_report(counts):
     sorted_ips = sorted(counts.items(), key=lambda pair: pair[1], reverse=True)
     print("[!] Suspicious login activity detected:")
