@@ -2,6 +2,7 @@ from analyzer import parse_log
 from datetime import datetime
 from analyzer import parse_timestamp
 from analyzer import collect_attempts, parse_log, parse_timestamp
+from analyzer import is_brute_force
 
 
 def test_counts_failed_attemtps(tmp_path):
@@ -61,3 +62,11 @@ def test_collect_attempts(tmp_path):
         "1.1.1.1": [datetime(2026, 9, 8, 10, 14, 22),datetime(2026, 9, 8, 10, 14, 25)],
         "2.2.2.2": [datetime(2026, 9, 8, 10, 14, 28)],
     }
+def test_brute_force_detected():
+    times = [
+        datetime(2026, 9, 8, 10, 0, 0),
+        datetime(2026, 9, 8, 10, 0, 5),
+        datetime(2026, 9, 8, 10, 0, 10),
+        datetime(2026, 9, 8, 10, 5, 0),
+    ]
+    assert is_brute_force(times, 3, 30) is True

@@ -58,7 +58,18 @@ def collect_attempts(log_file):
         )
         sys.exit(1)
     return attempts
-
+def is_brute_force(times, threshold, window):
+    n = len(times)
+    k = threshold
+    
+    for i in range(n - k  +1):
+        first_attempt = times[i]
+        last_attempt = times[i + k -1]
+        if (last_attempt - first_attempt).total_seconds() <= window:
+            return True
+    return False
+        
+        
 
 def print_report(counts):
     sorted_ips = sorted(counts.items(), key=lambda pair: pair[1], reverse=True)
